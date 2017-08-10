@@ -1,15 +1,37 @@
 import React, {Component} from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
+import { connect } from 'react-redux';
+import { logIntoFacebook } from '../actions';
 
-const AuthScreen = () => (
-  <View style={{marginTop: 40}}>
-    <Text>AuthScreen</Text>
-    <Text>AuthScreen</Text>
-    <Text>AuthScreen</Text>
-    <Text>AuthScreen</Text>
-    <Text>AuthScreen</Text>
-    <Text>AuthScreen</Text>
-  </View>
-)
+class AuthScreen extends Component {
 
-export default AuthScreen;
+  componentWillMount(){
+    this.props.logIntoFacebook();
+  }
+
+  componentWillReceiveProps({token}){
+    token ? this.onAuthComplete(token) : null;
+  }
+
+  onAuthComplete(token){
+    console.log(this.props);
+    if(token){
+      this.props.navigation.navigate('Map');
+    }
+  }
+
+  render(){
+    return (
+      <View style={{flex: 1, marginTop: 40}}>
+        <Text style={{fontSize: 30, textAlign: 'center'}}>Logging in...</Text>
+      </View>
+    )
+  }
+}
+
+function mapStateToProps({ auth }){
+  console.log(auth);
+  return {token: auth.fb_token} 
+};
+
+export default connect( mapStateToProps, { logIntoFacebook } )( AuthScreen );

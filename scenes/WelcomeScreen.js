@@ -1,15 +1,45 @@
 import React, {Component} from 'react';
-import { View, Text } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  AsyncStorage,
+} from 'react-native';
+import Slides from '../components/Slides';
+import { AppLoading } from 'expo';
 
-const WelcomeScreen = (props) => (
-  <View style={{marginTop: 40}}>
-    <Text>WelcomeScreen</Text>
-    <Text>WelcomeScreen</Text>
-    <Text>WelcomeScreen</Text>
-    <Text>WelcomeScreen</Text>
-    <Text>WelcomeScreen</Text>
-    <Text>WelcomeScreen</Text>
-  </View>
-)
+class WelcomeScreen extends Component {
+  state = { showSlides: false };
 
+  async componentDidMount(){
+    let token = await AsyncStorage.getItem('fb_token');
+    if (token) {
+      this.props.navigation.navigate('Map');
+    }
+    else {
+      this.setState({ showSlides: true });
+    }
+  }
+
+  handleButton = () => {
+    this.props.navigation.navigate('Auth');
+  }
+
+  renderSlides() {
+    return <Slides handleButton = { this.handleButton } />
+  }
+
+  render(){
+    return (
+      <View style={styles.container}>
+        { this.state.showSlides ? this.renderSlides() : <AppLoading /> }
+      </View>
+    )
+  }
+}
 export default WelcomeScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  }
+})

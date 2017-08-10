@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { Platform } from 'react-native';
 
 import WelcomeScreen from './WelcomeScreen';
 import AuthScreen from './AuthScreen';
@@ -11,27 +11,46 @@ import {
   StackNavigator
 } from 'react-navigation';
 
-  const reviewNav = StackNavigator({
-    Review: {screen: ReviewScreen},
-    Settings: {screen: SettingsScreen},
-  });
-
- const mainNav = TabNavigator({
-    Map: {screen: MapScreen},
-    Deck: {screen: DeckScreen},
-    Review: { screen: reviewNav }
-  }, {
-    tabBarPosition: 'bottom'
+const androidFixes = Platform.OS === 'android'
+  ? {
+      swipeEnabled: false,
+      animationEnabled: false
     }
-  );
+  : {};
 
-export default RouteConfigs = TabNavigator({
+const reviewNav = StackNavigator({
+  Review: {screen: ReviewScreen},
+  Settings: {screen: SettingsScreen},
+});
+
+const mainNav = TabNavigator({
+  Map: {screen: MapScreen},
+  Deck: {screen: DeckScreen},
+  Review: { screen: reviewNav }
+}, {
+    tabBarPosition: 'bottom',
+    ...androidFixes,
+    tabBarOptions: {
+      style: {backgroundColor: 'white'},
+      labelStyle: { color: 'black'}
+    }
+  }
+);
+
+export default Navigator = TabNavigator({
   Welcome: { screen: WelcomeScreen },
   Auth: { screen: AuthScreen },
   Main: { screen: mainNav },
 },{
     tabBarPosition: 'bottom',
-    swipeEnabled: false,
-    animationEnabled: false
+    ...androidFixes,
+    lazy: true,
+    tabBarOptions: {
+      style: {backgroundColor: 'white'},
+      labelStyle: { color: 'black'}
+    },
+    navigationOptions: {
+      tabBarVisible: false
+    }
   }
 );

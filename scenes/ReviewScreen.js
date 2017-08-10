@@ -19,6 +19,8 @@ ReviewScreen.navigationOptions = ({navigation}) => ({
   headerRight: <Button
     title = 'Settings'
     onPress = {() => navigation.navigate('Settings')}
+    backgroundColor = 'rgba(0, 0, 0, 0)'
+    color = 'rgba(0, 122, 255, 1)'
   />,
   headerStyle: {marginTop: 20},
 });

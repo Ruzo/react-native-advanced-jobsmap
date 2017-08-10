@@ -3,13 +3,19 @@ import { StyleSheet, Text, View } from 'react-native';
 import {
   TabNavigator
 } from 'react-navigation';
-import RouteConfigs from './scenes/route_configs';
+import { Provider } from 'react-redux';
+
+import Navigator from './scenes/route_configs';
+import store from './store';
 
 export default class App extends React.Component {
   render() {
-    const Navigator = RouteConfigs;
     return (
-      <Navigator />
+      <Provider store = { store }>
+        <View style = { styles.container }>
+          <Navigator />
+        </View>
+      </Provider>
     );
   }
 }
@@ -17,8 +23,5 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
